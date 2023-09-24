@@ -25,3 +25,47 @@ for row in daily_yield_curves:
 
 outf.close()
 
+
+
+
+import numpy as np
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.pyplot as plt
+
+# c
+import pandas as pd
+
+
+# Extract dates and bond maturities from the first sub-list
+dates = [item[0] for item in daily_yield_curves]
+bond_maturities = daily_yield_curves[0][1:]
+
+# Extract interest rate values for the DataFrame
+interest_rates = [[float(rate) for rate in item[1:]] for item in daily_yield_curves[1:]]
+yield_curve_df = pd.DataFrame(interest_rates, columns=bond_maturities, index=dates[-1:-250:-1])
+
+
+# Display the DataFrame
+print(yield_curve_df)
+
+
+yield_curve_df.plot() 
+plt.show()
+
+yield_curve_df.T.plot()
+plt.show()
+
+
+# Extract every 20th trading day
+selected_trading_days = yield_curve_df[::20]
+
+
+
+# Transpose the DataFrame and select only the desired trading days
+by_day_yield_curve_df = selected_trading_days.T
+
+# Display the resulting DataFrame
+print(by_day_yield_curve_df)
+
+by_day_yield_curve_df.plot()
+plt.show()
