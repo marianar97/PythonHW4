@@ -1,6 +1,6 @@
 
 daily_yield_curves = []
-with open('daily-treasury-rates-2022.csv', 'rt', encoding='utf-8') as fin:
+with open('daily-treasury-rates2022.csv', 'rt', encoding='utf-8') as fin:
     for line in fin:
         line = line[:-1]   # eliminate final '\n'
         row = line.split(',')

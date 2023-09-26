@@ -1,5 +1,5 @@
-# marianar@andrew.cmu.edu
-# anqiyang@andrew.cmu.edu
+# marianar@andrew.cmu.edu 
+# anqiyang@andrew.cmu.edu 
 # potungk@andrew.cmu.edu
 
 from datetime import datetime
@@ -10,7 +10,7 @@ from matplotlib import cm
 from matplotlib.ticker import FormatStrFormatter
 import pandas as pd
 
-##### PART A
+# part A
 
 # code for modifying 2019 data
 
@@ -37,9 +37,9 @@ import pandas as pd
 # daily_yield_curves.insert(0,column)
 # #daily_yield_curves
 
-### code for modifying and output 2022 data
+# code for modifying and output 2022 data
 
-input = open('daily-treasury-rates-2022.csv', encoding='utf-8')
+input = open('daily-treasury-rates2022.csv', encoding='utf-8')
 
 daily_yield_curves = []
 cnt = 0
@@ -71,8 +71,7 @@ for i in daily_yield_curves:
 
 output.close()
 
-##### PART B
-
+# part B
 # transform data
 data = daily_yield_curves
 x = []
@@ -88,7 +87,7 @@ Z = np.array(z).transpose()
 
 # print(X.shape, Y.shape, Z.shape)
 
-### plot_surface
+# plot_surface
 fig = plt.figure(figsize=(8, 10))
 ax = fig.add_subplot(1, 1, 1, projection='3d')
 surf = ax.plot_surface(X, Y, Z, cmap=cm.coolwarm, linewidth=0, antialiased=False)
@@ -97,42 +96,43 @@ ax.zaxis.set_major_formatter(FormatStrFormatter('%.1f'))
 fig.colorbar(surf, ax=ax, shrink=1, aspect=4, anchor=(0.2, 0.35), fraction=0.08)
 fig.show()
 
-### plot_wireframe
+# plot_wireframe
 fig = plt.figure(figsize=(8, 10))
 ax = fig.add_subplot(1, 1, 1, projection='3d')
 surf = ax.plot_wireframe(X, Y, Z, cmap=cm.coolwarm)
 ax.set(xlabel='trading days since 01/03/22', ylabel='months to maturity', zlabel='rate')
 ax.zaxis.set_major_formatter(FormatStrFormatter('%.1f'))
-fig.colorbar(surf, ax=ax, shrink=1, aspect=4, anchor=(0.2, 0.35), fraction=0.08)
+#fig.colorbar(surf, ax=ax, shrink=1, aspect=4, anchor=(0.2, 0.35), fraction=0.08)
 plt.show()
 
 
 
 # part C
 # Extract dates and bond maturities from the first sub-list
-
 dates = [item[0] for item in daily_yield_curves[1:]]
-dates = [datetime.strptime(item[0], '%m/%d/%y') for item in daily_yield_curves[1:]]
+#dates = [datetime.strptime(item[0], '%m/%d/%y').date() for item in daily_yield_curves[1:]]
 bond_maturities = daily_yield_curves[0][1:]
 
 # Extract interest rate values for the DataFrame
 interest_rates = [[float(rate) for rate in item[1:]] for item in daily_yield_curves[1:]]
 yield_curve_df = pd.DataFrame(interest_rates, columns=bond_maturities, index=dates)
-title = "US Treasury Yield Curve"
-yield_curve_df.plot(title=title, xlabel="Date", ylabel="Yield %")
+yield_curve_df
+
+# plot 1
+yield_curve_df.plot(title="Interest Rate Time Series, 2022")
+plt.show()
+# plot 2 - transpose plot 1
+yield_curve_df.T.plot(title="Interest Rate Time Series, 2022", xlabel="Maturity", ylabel="Yield %")
 plt.show()
 
-yield_curve_df.T.plot(title=title, xlabel="Maturity", ylabel="Yield %")
-plt.show()
-
-
+#plot 3 - 20 days interval
 # Extract every 20th trading day
 selected_trading_days = yield_curve_df[::20]
 # # Transpose the DataFrame and select only the desired trading days
 by_day_yield_curve_df = selected_trading_days.T
 
 # Display the resulting DataFrame
-print(by_day_yield_curve_df)
-by_day_yield_curve_df.plot(title=title, xlabel="Maturity", ylabel="Yield %")
+by_day_yield_curve_df=by_day_yield_curve_df.rename(index = {'1 Mo':1, '2 Mo':2, '3 Mo':3, '6 Mo':6, '1 Yr':12, '2 Yr':24, '3 Yr':36, '5 Yr':60, '7 Yr':84, '10 Yr':120, '20 Yr':240, '30 Yr':360})
+by_day_yield_curve_df.plot(title='2022 Yield Curves, 20 Day Interval').legend(loc=4)
 plt.show()
 plt.show()
