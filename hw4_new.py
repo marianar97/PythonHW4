@@ -133,5 +133,6 @@ by_day_yield_curve_df = selected_trading_days.T
 
 # Display the resulting DataFrame
 print(by_day_yield_curve_df)
-by_day_yield_curve_df.plot()
-plt.show(title=title, xlabel="Maturity", ylabel="Yield %")
+by_day_yield_curve_df.plot(title=title, xlabel="Maturity", ylabel="Yield %")
+plt.show()
+plt.show()
